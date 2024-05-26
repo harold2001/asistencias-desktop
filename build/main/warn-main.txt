@@ -15,9 +15,9 @@ IMPORTANT: Do NOT post this list to the issue-tracker. Use it as a basis for
             tracking down the missing module yourself. Thanks!
 
 missing module named pyimod02_importers - imported by C:\Users\harol\AppData\Roaming\Python\Python312\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgres.py (delayed), C:\Users\harol\AppData\Roaming\Python\Python312\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgutil.py (delayed)
-missing module named pwd - imported by posixpath (delayed, conditional, optional), shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional), pkg_resources._vendor.backports.tarfile (optional), netrc (delayed, conditional), getpass (delayed)
+missing module named pwd - imported by shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional), posixpath (delayed, conditional, optional), pkg_resources._vendor.backports.tarfile (optional), netrc (delayed, conditional), getpass (delayed)
 missing module named grp - imported by shutil (delayed, optional), tarfile (optional), pathlib (delayed, optional), subprocess (delayed, conditional, optional), pkg_resources._vendor.backports.tarfile (optional)
-missing module named posix - imported by os (conditional, optional), posixpath (optional), shutil (conditional), importlib._bootstrap_external (conditional)
+missing module named posix - imported by shutil (conditional), importlib._bootstrap_external (conditional), os (conditional, optional), posixpath (optional)
 missing module named resource - imported by posix (top-level)
 excluded module named _frozen_importlib - imported by importlib (optional), importlib.abc (optional), zipimport (top-level)
 missing module named _frozen_importlib_external - imported by importlib._bootstrap (delayed), importlib (optional), importlib.abc (optional), zipimport (top-level)
@@ -46,3 +46,4 @@ missing module named numpy - imported by PIL.Image (delayed, conditional, option
 missing module named cffi - imported by PIL.Image (optional), PIL.PyAccess (optional)
 missing module named defusedxml - imported by PIL.Image (optional)
 missing module named ttkbootstrap.dialogs.Dialog - imported by ttkbootstrap.dialogs (top-level), ttkbootstrap.dialogs.colorchooser (top-level)
+missing module named readline - imported by code (delayed, conditional, optional)

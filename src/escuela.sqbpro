@@ -1,6 +1,48 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/harol/OneDrive/Escritorio/BYUI/mine/school/src/escuela.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1424"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:mainalumnos"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="alumnos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="73"/><column index="2" value="57"/><column index="3" value="64"/><column index="4" value="65"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="asistencias" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="92"/><column index="2" value="73"/><column index="3" value="179"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="grados" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="65"/><column index="2" value="55"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="niveles" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="57"/><column index="2" value="40"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE &quot;asistencias&quot;(
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/harol/OneDrive/Escritorio/BYUI/mine/school/src/escuela.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser query pragmas" current="2"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1636"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:mainalumnos"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="alumnos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="73"/><column index="2" value="64"/><column index="3" value="64"/><column index="4" value="121"/><column index="5" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="asistencias" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="92"/><column index="2" value="73"/><column index="3" value="179"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="grados" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="65"/><column index="2" value="55"/><column index="3" value="57"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="grados_secciones" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="121"/><column index="2" value="65"/><column index="3" value="75"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="niveles" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="57"/><column index="2" value="69"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="secciones" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="75"/><column index="2" value="56"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE &quot;secciones&quot;(
+	&quot;seccion_id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,
+	&quot;seccion&quot; VARCHAR(10)
+);
+
+CREATE TABLE &quot;grados_secciones&quot;(
+	&quot;grado_seccion_id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,
+	&quot;grado_id&quot; INTEGER,
+	&quot;seccion_id&quot; INTEGER,
+	FOREIGN KEY (&quot;grado_id&quot;) REFERENCES &quot;grados&quot;(&quot;grado_id&quot;),
+	FOREIGN KEY (&quot;seccion_id&quot;) REFERENCES &quot;secciones&quot;(&quot;seccion_id&quot;)
+);
+
+CREATE TABLE &quot;alumnos&quot;(
+	&quot;alumno_id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,
+	&quot;nombres&quot; VARCHAR(200),
+	&quot;apellidos&quot; VARCHAR(200),
+	&quot;grado_seccion_id&quot; INTEGER,
+	&quot;codigo&quot; VARCHAR(200),
+	FOREIGN KEY (&quot;grado_seccion_id&quot;) REFERENCES &quot;grados_secciones&quot;(&quot;grado_seccion_id&quot;)
+);
+
+CREATE TABLE &quot;asistencias&quot;(
 	&quot;asistencia_id&quot; INTEGER PRIMARY KEY AUTOINCREMENT,
-	&quot;alumno_id&quot; INT,
-	&quot;fecha&quot; DATETIME,
-	FOREIGN KEY (&quot;alumno_id&quot;) REFERENCES &quot;alumnos&quot; (&quot;alumno_id&quot;)
-);</sql><current_tab id="0"/></tab_sql></sqlb_project>
+	&quot;alumno_id&quot; INTEGER,
+	&quot;llegada&quot; DATETIME
+);
+
+INSERT INTO &quot;secciones&quot;(&quot;seccion&quot;) VALUES(&quot;A&quot;), (&quot;B&quot;), (&quot;C&quot;);
+
+INSERT INTO &quot;grados_secciones&quot; (&quot;grado_id&quot;, &quot;seccion_id&quot;) VALUES(1,1), (1,2), (2,1), (2,2), (3,1), (3,2);
+
+INSERT INTO &quot;alumnos&quot;(&quot;nombres&quot;, &quot;apellidos&quot;, &quot;grado_seccion_id&quot;, &quot;codigo&quot;)
+VALUES
+(&quot;Juan&quot;, &quot;Perez&quot;, 1, &quot;123123123&quot;),
+(&quot;Pedro&quot;, &quot;Martinez&quot;, 2, &quot;456456456&quot;),
+(&quot;Esteban&quot;, &quot;Mendoza&quot;, 3, &quot;789789789&quot;),
+(&quot;Ernesto&quot;, &quot;Velasquez&quot;, 4, &quot;123456789&quot;);
+
+SELECT a.alumno_id, a.nombres, a.apellidos, s.seccion FROM grados_secciones gs
+INNER JOIN alumnos a ON gs.grado_seccion_id = a.grado_seccion_id
+INNER JOIN secciones s ON gs.seccion_id = s.seccion_id
+WHERE grado_id = 1
+ORDER BY gs.seccion_id;
+
+
+SELECT llegada FROM asistencias
+WHERE alumno_id = 1;</sql><current_tab id="0"/></tab_sql></sqlb_project>

@@ -160,3 +160,10 @@ SET
             LOWER(g.grado) = LOWER(alumnos.grado)
             AND dg.seccion = alumnos.grupo
     );
+
+UPDATE alumnos
+SET fecha_ingreso = 
+    SUBSTR(fecha_ingreso, 7, 4) || '-' || 
+    SUBSTR(fecha_ingreso, 4, 2) || '-' || 
+    SUBSTR(fecha_ingreso, 1, 2)
+WHERE fecha_ingreso LIKE '%%/%%/%%%%';

@@ -29,7 +29,7 @@ class Main:
         self.wind.geometry(f"{int(width)}x{int(height)}")
 
         # Ventanta maximizada: Full
-        self.wind.state("zoomed")
+        # self.wind.state("zoomed")
 
         self.wind.title("Sistema de asistencias")
         menubar = Menu(self.wind)
@@ -379,13 +379,14 @@ class Main:
             frame_input_boton,
             text="Agregar manualmente",
             bootstyle=PRIMARY,
-            command=lambda: self.register_asistencia(self.input_codigo.get()),
+            command=lambda: self.register_asistencia(self.input_codigo.get().upper()),
         )
         boton_agregar.pack(side="left", padx=10, pady=20)
 
         # Escuchador de evento "Enter" a la ventana principal
         self.wind.bind(
-            "<Return>", lambda event: self.register_asistencia(self.input_codigo.get())
+            "<Return>",
+            lambda event: self.register_asistencia(self.input_codigo.get().upper()),
         )
 
     def set_salida_view(self):
@@ -410,13 +411,14 @@ class Main:
             frame_input_boton,
             text="Agregar manualmente",
             bootstyle=PRIMARY,
-            command=lambda: self.register_salida(self.input_codigo.get()),
+            command=lambda: self.register_salida(self.input_codigo.get().upper()),
         )
         boton_agregar.pack(side="left", padx=10, pady=20)
 
         # Escuchador de evento "Enter" a la ventana principal
         self.wind.bind(
-            "<Return>", lambda event: self.register_salida(self.input_codigo.get())
+            "<Return>",
+            lambda event: self.register_salida(self.input_codigo.get().upper()),
         )
 
     def set_reporte_general_view(self):
@@ -563,7 +565,10 @@ class Main:
                         {"text": f"{dia_letra}-{dia_fecha}", "stretch": True}
                     )
                 current_day += timedelta(days=1)
-
+            dias_cantidad = len(dias.keys())
+            coldata.append({"text": "Asistencias", "stretch": True})
+            coldata.append({"text": "% Asistencia", "stretch": True})
+            coldata.append({"text": "Inasistencias", "stretch": True})
             alumnos_rows = list(alumnos)
             mes_num_string = f"{mes_num:02d}"
 
@@ -596,6 +601,7 @@ class Main:
                     [grado_id, seccion, mes_num_string, alumno[0]],
                 ).fetchall()
 
+                alumno_asistencias_cantidad = len(alumno_mes_asistencias)
                 alumno_dias = deepcopy(dias)
 
                 for asistencia in alumno_mes_asistencias:
@@ -607,6 +613,12 @@ class Main:
                 letras = [valor["asistencia"] for valor in alumno_dias.values()]
                 data = [numero, f"{alumno[1]} {alumno[2]} {alumno[3]}"]
                 data.extend(letras)
+                data.append(alumno_asistencias_cantidad)
+                asistencia_porcentaje = (
+                    alumno_asistencias_cantidad / dias_cantidad * 100
+                )
+                data.append(f"{asistencia_porcentaje:.1f}%")
+                data.append(dias_cantidad - alumno_asistencias_cantidad)
                 rowsdata.append(tuple(data))
 
             # Crear tabla
@@ -1520,7 +1532,7 @@ if __name__ == "__main__":
     window = Tk()
 
     # Activar modo oscuro
-    # style = ttk.Style("darkly")
+    style = ttk.Style("darkly")
 
     app = Main(window, "escuela.db")
     window.mainloop()

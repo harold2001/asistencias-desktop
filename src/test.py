@@ -17,3 +17,10 @@ coldata = [
     {"text": "Nombres y apellidos", "stretch": True},
 ]
 # for dias in list(semanas.values()):
+
+
+records = [row.values for row in table.tablerows]
+
+        if len(headers) == 0 or len(records) == 0:
+            self.display_error_box("No hay datos para exportar en esta tabla")
+            return

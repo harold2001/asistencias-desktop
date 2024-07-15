@@ -29,7 +29,7 @@ class Main:
         self.wind.geometry(f"{int(width)}x{int(height)}")
 
         # Ventanta maximizada: Full
-        # self.wind.state("zoomed")
+        self.wind.state("zoomed")
 
         self.wind.title("Sistema de asistencias")
         menubar = Menu(self.wind)
@@ -134,6 +134,7 @@ class Main:
 
     def register_asistencia(self, codigo_alumno):
         """Función para registrar asistencia cuando se presione 'Enter' en la vista principal"""
+        self.input_codigo.delete(0, END)
         if codigo_alumno in (None, ""):
             return self.display_error_box("Código inválido")
 
@@ -181,6 +182,8 @@ class Main:
 
     def register_salida(self, codigo_alumno):
         """Marcar salida de un alumno"""
+        self.input_codigo.delete(0, END)
+
         if codigo_alumno in (None, ""):
             return self.display_error_box("Código inválido")
 
@@ -328,6 +331,155 @@ class Main:
         for row, row_data in enumerate(records, start=5):
             for col, data in enumerate(row_data, start=1):
                 ws.cell(row=row, column=col, value=data)
+
+        # Guardar el archivo Excel en la ubicación especificada
+        try:
+            wb.save(file_path)
+        except PermissionError:
+            self.display_error_box(
+                "No se pudo guardar el archivo. Permiso denegado. Cierre el archivo."
+            )
+            return
+
+        # Abrir el archivo después de guardarlo
+        answer = Messagebox.show_question(
+            message="Archivo guardado con éxito. ¿Desea abrirlo?",
+            title="Operación exitosa",
+            alert=True,
+            parent=self.main_frame,
+            buttons=["No:secondary", "Sí:primary"],
+        )
+
+        if answer.lower() == "sí":
+            subprocess.Popen([file_path], shell=True)
+        else:
+            Messagebox.show_info(
+                message=f"Archivo guardado en la ruta {file_path}",
+                title="Archivo guardado",
+                alert=True,
+                parent=self.main_frame,
+            )
+
+    def export_to_excel_2(self, table, fecha, alumno_grado=None, alumno_seccion=None):
+        """Exportar datos de una tabla TableView en formato Excel"""
+        # Traer datos de las cabeceras y registros de la tabla
+        headers = [col.headertext for col in table.tablecolumns]
+        records = [row.values for row in table.tablerows]
+
+        if len(headers) == 0 or len(records) == 0:
+            self.display_error_box("No hay datos para exportar en esta tabla")
+            return
+
+        # Obtener la ubicación y el nombre del archivo del usuario
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Archivos de Excel", "*.xlsx")],
+            initialfile=f"{fecha}.xlsx",
+        )
+        if not file_path:
+            self.display_error_box("Ruta inválida para guardar un archivo")
+            return
+
+        wb = Workbook()
+        ws = wb.active
+
+        # Celda A1
+        ws.cell(row=1, column=1, value="FECHA:")
+        # Combinar las celdas B1, C1 y D1
+        ws.merge_cells(start_row=1, start_column=2, end_row=1, end_column=4)
+        ws.cell(row=1, column=2, value=fecha)
+
+        # Celda B1 y B2
+        ws.cell(row=2, column=1, value="GRADO:")
+        ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=4)
+        ws.cell(row=2, column=2, value=alumno_grado)
+
+        # Celda C1 y C2
+        ws.cell(row=3, column=1, value="SECCIÓN:")
+        ws.merge_cells(start_row=3, start_column=2, end_row=3, end_column=4)
+        ws.cell(row=3, column=2, value=alumno_seccion)
+
+        # Escribir los encabezados de las columnas
+        for col, column_name in enumerate(headers, start=1):
+            ws.cell(row=4, column=col, value=column_name)
+
+        # Escribir los datos de las filas
+        for row, row_data in enumerate(records, start=5):
+            for col, data in enumerate(row_data, start=1):
+                ws.cell(row=row, column=col, value=data)
+
+        # Guardar el archivo Excel en la ubicación especificada
+        try:
+            wb.save(file_path)
+        except PermissionError:
+            self.display_error_box(
+                "No se pudo guardar el archivo. Permiso denegado. Cierre el archivo."
+            )
+            return
+
+        # Abrir el archivo después de guardarlo
+        answer = Messagebox.show_question(
+            message="Archivo guardado con éxito. ¿Desea abrirlo?",
+            title="Operación exitosa",
+            alert=True,
+            parent=self.main_frame,
+            buttons=["No:secondary", "Sí:primary"],
+        )
+
+        if answer.lower() == "sí":
+            subprocess.Popen([file_path], shell=True)
+        else:
+            Messagebox.show_info(
+                message=f"Archivo guardado en la ruta {file_path}",
+                title="Archivo guardado",
+                alert=True,
+                parent=self.main_frame,
+            )
+
+    def export_to_excel_3(self, tables, grado=None, seccion=None):
+        """Exportar datos de una tabla TablheView en formato Excel"""
+        # Obtener la ubicación y el nombre del archivo del usuario
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Archivos de Excel", "*.xlsx")],
+            initialfile=f"{grado}.xlsx",
+        )
+        if not file_path:
+            self.display_error_box("Ruta inválida para guardar un archivo")
+            return
+
+        wb = Workbook()
+        ws = wb.active
+
+        # Celda A1
+        ws.cell(row=1, column=1, value="SECCIÓN:")
+        # Combinar las celdas B1, C1 y D1
+        ws.cell(row=1, column=2, value=seccion)
+
+        # Celda B1 y B2
+        ws.cell(row=2, column=1, value="GRADO:")
+        ws.cell(row=2, column=2, value=grado)
+
+        # Escribir los datos de las filas
+        first_row = 3
+        for mes, table in tables:
+            # Traer datos de las cabeceras y registros de la tabla
+            records = [row.values for row in table.tablerows]
+            headers = [col.headertext for col in table.tablecolumns]
+            first_row += 1
+            ws.cell(row=first_row, column=1, value="MES:")
+            ws.cell(row=first_row, column=2, value=mes)
+            first_row += 1
+
+            # Escribir los encabezados de las columnas
+            for col, column_name in enumerate(headers, start=1):
+                ws.cell(row=first_row, column=col, value=column_name)
+            first_row += 1
+
+            for row, row_data in enumerate(records, start=first_row):
+                for col, data in enumerate(row_data, start=1):
+                    ws.cell(row=row, column=col, value=data)
+                first_row += 1
 
         # Guardar el archivo Excel en la ubicación especificada
         try:
@@ -532,6 +684,7 @@ class Main:
         ).fetchall()
 
         # Tabla por mes
+        tables = []
         for mes_num, mes_nombre in enumerate(meses, start=1):
             ttk.Label(
                 sf_tablas,
@@ -635,12 +788,21 @@ class Main:
                 height=40,
             )
             dt.pack(fill=BOTH, expand=True, padx=40, pady=(0, 50))
+            tables.append((mes_nombre, dt))
 
             # Centrar cabeceras y filas de la tabla
             for col_id in dt.view["columns"]:
                 if int(col_id) >= 2:
                     dt.view.column(col_id, anchor="center")
                     dt.view.heading(col_id, anchor="center")
+
+        export_button = ttk.Button(
+            self.wind,
+            text="Exportar a Excel",
+            bootstyle=SUCCESS,
+            command=lambda: self.export_to_excel_3(tables, grado, seccion),
+        )
+        export_button.place(relx=1.0, y=25, x=-30, anchor="ne")
 
     def set_reporte_alumno_view(self):
         """Buscar un alumno por nombre y mostrar su reporte de asistencias en otra vista"""
@@ -1056,6 +1218,15 @@ class Main:
         for col_id in dt.view["columns"]:
             dt.view.column(col_id, anchor="center")
             dt.view.heading(col_id, anchor="center")
+
+        # Crear el botón de exportar
+        export_button = ttk.Button(
+            self.main_frame,
+            text="Exportar a Excel",
+            command=lambda: self.export_to_excel_2(dt, fecha, grado, seccion),
+            bootstyle=SUCCESS,
+        )
+        export_button.pack(pady=10)
 
     def set_alumno_add_view(self):
         """Vista para agregar un alumno"""
@@ -1532,7 +1703,7 @@ if __name__ == "__main__":
     window = Tk()
 
     # Activar modo oscuro
-    style = ttk.Style("darkly")
+    # style = ttk.Style("darkly")
 
     app = Main(window, "escuela.db")
     window.mainloop()

@@ -134,9 +134,11 @@ class Main:
 
     def register_asistencia(self, codigo_alumno):
         """Función para registrar asistencia cuando se presione 'Enter' en la vista principal"""
-        self.input_codigo.delete(0, END)
+        # self.input_codigo.delete(0, END)
         if codigo_alumno in (None, ""):
-            return self.display_error_box("Código inválido")
+            # self.input_codigo.delete(0, END)
+            # return self.display_error_box("Código inválido")
+            return
 
         alumno = self.run_query(
             "SELECT alumno_id, nombres, apellido_paterno FROM alumnos WHERE codigo = ?",
@@ -144,6 +146,7 @@ class Main:
         ).fetchone()
 
         if alumno in (None, "") or len(alumno) == 0:
+            self.input_codigo.delete(0, END)
             return self.display_error_box("No se encontró el alumno")
 
         now = datetime.now()
@@ -163,6 +166,7 @@ class Main:
         ).fetchall()
 
         if len(existentes) > 0:
+            self.input_codigo.delete(0, END)
             return self.display_error_box(
                 "Hoy ya se marcó la entrada de este alumno. Puedes marcar su salida."
             )
@@ -174,10 +178,12 @@ class Main:
         )
 
         if asistencia:
+            self.input_codigo.delete(0, END)
             return self.display_success_toast(
                 f"Asistencia marcada para el alumno: {alumno[1]} {alumno[2]}"
             )
 
+        self.input_codigo.delete(0, END)
         return self.display_error_box("Error interno al registrar la entrada")
 
     def register_salida(self, codigo_alumno):
@@ -185,7 +191,8 @@ class Main:
         self.input_codigo.delete(0, END)
 
         if codigo_alumno in (None, ""):
-            return self.display_error_box("Código inválido")
+            # return self.display_error_box("Código inválido")
+            return
 
         alumno = self.run_query(
             "SELECT alumno_id, nombres, apellido_materno FROM alumnos WHERE codigo = ?",
